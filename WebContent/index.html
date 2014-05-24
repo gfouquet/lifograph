@@ -1,141 +1,37 @@
 <html>
 <head>
-	<script src="http://code.jquery.com/jquery-2.1.1.js"></script>
-	<script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
-	<style>
-	.alive {
-		background-color: red;
-	}
-	.dead {
-		background-color: silver;
-	}
-	</style>
+<script src="http://code.jquery.com/jquery-2.1.1.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+<style>
+body {
+	background-color: gray;
+}
+table {
+border-collapse: collapse;
+}
+td {
+width: 5px;
+height: 5px;
+}
+
+.alive {
+	background-color: red;
+}
+
+.dead {
+	background-color: silver;
+}
+</style>
 </head>
 <body>
-	<table>
-	<tbody>
-	<tr>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	</tr>
-	<tr>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	</tr>
-	<tr>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	</tr>
-	<tr>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	</tr>
-	<tr>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	</tr>
-	<tr>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	</tr>
-	<tr>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	</tr>
-	<tr>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	</tr>
-	<tr>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	</tr>
-	<tr>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	</tr>
-	</tbody>
-	</table>
-	<script src="js/app/lifograph.js"></script>
+  <table>
+    <tbody>
+    </tbody>
+  </table>
+  <script src="js/app/lifograph.js"></script>
+  <input type="button" id="init" value="initialize" />
+  <input type="button" id="start" value="start" />
+  <input type="button" id="next" value="next" />
+  <input type="button" id="stop" value="stop" />
 </body>
 </html>
