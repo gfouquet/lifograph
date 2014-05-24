@@ -10,6 +10,9 @@ table {
 border-collapse: collapse;
 }
 td {
+padding: 0;
+margin: 0;
+border: 0;
 width: 5px;
 height: 5px;
 }
@@ -24,14 +27,18 @@ height: 5px;
 </style>
 </head>
 <body>
-  <table>
-    <tbody>
-    </tbody>
-  </table>
   <script src="js/app/lifograph.js"></script>
+  <input type="text" id="rowCount" value="10" />
+  <input type="text" id="colCount" value="10" />
   <input type="button" id="init" value="initialize" />
   <input type="button" id="start" value="start" />
   <input type="button" id="next" value="next" />
   <input type="button" id="stop" value="stop" />
+  <h3>petri dish</h3>
+  <table>
+    <tbody>
+    </tbody>
+  </table>
+  <h3>petri dish</h3>
 </body>
 </html>
