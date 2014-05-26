@@ -3,90 +3,74 @@
 	var neighborhood = [ [ -1, -1 ], [ -1, 0 ], [ -1, 1 ], [ 0, 1 ], [ 1, 1 ], [ 1, 0 ], [ 1, -1 ], [ 0, -1 ] ];
 
 	function randomState() {
-		return (Math.floor(Math.random() * (3 - 0 + 1)) + 0) ? "dead" : "alive";
+		return (Math.floor(Math.random() * (3 - 0 + 1)) + 0) ? false : true;
 	}
 
 	function PetriDish(rowCount, colCount) {
-		this._cellsMatrix = [];
+		if (_.isArray(arguments[0])) {
+			this._cells = arguments[0];
+			return this;
+		}
+		
+		this._cells = [];
 
 		for (var r = 0; r < rowCount; r++) {
-			this._cellsMatrix.push([]);
+			this._cells.push([]);
 			for (var c = 0; c < colCount; c++) {
-				this._cellsMatrix[r].push(new Cell({
-					row : r,
-					col : c,
-					dish : this,
-					state : randomState()
-				}));
+				this._cells[r].push(randomState());
 			}
 		}
 	}
 
-	PetriDish.prototype.neighbors = function(cell) {
+	PetriDish.prototype.neighbors = function(row, col) {
 		var self = this;
 
 		var neighborMapper = function(offset) {
-			var nrow = cell.row + offset[0];
-			var ncol = cell.col + offset[1];
-			return !!self._cellsMatrix[nrow] && self._cellsMatrix[nrow][ncol];
+			var nrow = row + offset[0];
+			var ncol = col + offset[1];
+			
+			if (self._cells[nrow] !== undefined && self._cells[nrow][ncol] !== undefined) {
+				return self._cells[nrow][ncol];
+			}
+			
+			return undefined;
 		};
 
 		return neighborhood.map(neighborMapper).filter(function(item) {
-			return !!item;
+			return item !== undefined;
 		});
 	};
 
 	PetriDish.prototype.cell = function(row, col) {
-		return !!this._cellsMatrix[row] && this._cellsMatrix[row][col];
+		return !!this._cells[row] && this._cells[row][col];
 	};
 
 	PetriDish.prototype.nextBatch = function() {
-		var nextDish = new PetriDish();
+		var self = this;
 
-		var nextCells = this._cellsMatrix.map(function(row) {
-			return row.map(function(cell) {
-				return cell.nextBatch(nextDish);
+		var nextState = function(rdx, cdx, alive) {
+			var aliveNeighbors = self.neighbors(rdx, cdx).reduce(function(sum, alive) {
+				return alive ? sum + 1 : sum;
+			}, 0);
+
+			var stillAlive;
+
+			if (alive) {
+				stillAlive = aliveNeighbors === 2 || aliveNeighbors === 3;
+			} else { // dead
+				stillAlive = aliveNeighbors === 3;
+			}
+
+			return stillAlive;
+		};
+		
+		var nextCells = this._cells.map(function(row, rdx) {
+			return row.map(function(cell, cdx) {
+				return nextState(rdx, cdx, cell);
 			});
 		});
 
-		nextDish._cellsMatrix = nextCells;
-
-		return nextDish;
-	};
-
-	function Cell(opts) {
-		opts = _.defaults(opts, {
-			state : "alive"
-		});
-		this.state = opts.state;
-		this._dish = opts.dish;
-		this.row = opts.row;
-		this.col = opts.col;
-	}
-
-	Cell.prototype.nextBatch = function(nextDish) {
-		var neighbors = this._dish.neighbors(this);
-
-		var alive = neighbors.map(function(nbr) {
-			return nbr.state;
-		}).reduce(function(sum, state) {
-			return state === "alive" ? sum + 1 : sum;
-		}, 0);
-
-		var nextState;
-
-		if (this.state === "alive") {
-			nextState = alive === 2 || alive === 3 ? "alive" : "dead";
-		} else { // dead
-			nextState = alive === 3 ? "alive" : "dead";
-		}
-
-		return new Cell({
-			row : this.row,
-			col : this.col,
-			state : nextState,
-			dish : nextDish
-		});
+		return new PetriDish(nextCells);
 	};
 
 	(function() {
@@ -119,9 +103,9 @@
 			$("table tr").each(function(rdx, tr) {
 				$(tr).find("td").each(function(cdx, td) {
 					var $td = $(this);
-					var state = dish.cell(parseInt($td.data("row")), parseInt($td.data("col"))).state;
+					var alive = dish.cell(parseInt($td.data("row")), parseInt($td.data("col")));
 
-					$td.removeClass().addClass(state);
+					$td.removeClass().addClass(alive ? "alive" : "dead");
 				});
 			});
 			console.log("shown");
